@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#1a1612" />
+<title>The Data Dispatch — Daily Briefing</title>
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="icon" type="image/png" href="./icon-192.png" />
+<link rel="apple-touch-icon" href="./icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Data Dispatch" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,800;9..144,900&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1612; --paper:#f4ecdc; --paper-2:#ebe0c8;
+    --rule:#2a221b; --muted:#6b5e4d;
+    --accent:#9a2421; --accent-2:#c84a32; --live:#1f6b3a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Newsreader',Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  body{
+    background-image:
+      radial-gradient(rgba(26,22,18,.06) 1px, transparent 1px),
+      radial-gradient(rgba(26,22,18,.04) 1px, transparent 1px);
+    background-size:3px 3px,9px 9px;background-position:0 0,1px 2px;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 20px 80px}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.02em}
+
+  /* INSTALL / NEW-BANNER */
+  .alerts{position:sticky;top:0;z-index:50;display:flex;flex-direction:column;gap:6px;margin:-18px -20px 14px;padding:0}
+  .banner{
+    background:var(--ink);color:var(--paper);
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:10px 16px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  }
+  .banner.new{background:var(--accent)}
+  .banner button{
+    background:var(--paper);color:var(--ink);border:none;padding:6px 12px;font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer
+  }
+  .banner button.ghost{background:transparent;color:var(--paper);border:1px solid var(--paper)}
+  .banner .x{background:transparent;color:inherit;border:none;font-size:18px;line-height:1;padding:0 4px;cursor:pointer}
+  .banner.hidden{display:none}
+
+  /* MASTHEAD */
+  .masthead{border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);padding:14px 0 10px}
+  .masthead .top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}
+  .masthead h1{font-family:'Fraunces',serif;font-weight:900;font-style:italic;font-size:clamp(40px,9vw,96px);line-height:.92;margin:8px 0 6px;letter-spacing:-.02em}
+  .masthead h1 .amp{font-style:normal;font-weight:300;color:var(--accent)}
+  .sub{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--ink);padding-top:8px;border-top:1px solid var(--ink)}
+  .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 rgba(31,107,58,.6);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,107,58,.55)}70%{box-shadow:0 0 0 10px rgba(31,107,58,0)}100%{box-shadow:0 0 0 0 rgba(31,107,58,0)}}
+
+  /* LEAD */
+  .lead{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:28px;padding:22px 0 18px;border-bottom:1px solid var(--ink)}
+  @media (max-width:880px){.lead{grid-template-columns:1fr;gap:16px}}
+  .lead .deck{font-family:'Fraunces',serif;font-size:13px;text-transform:uppercase;letter-spacing:.22em;color:var(--accent);font-weight:600}
+  .lead h2{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(24px,3.4vw,36px);line-height:1.05;margin:8px 0 10px;letter-spacing:-.01em}
+  .lead p{font-size:17px;margin:0;color:var(--ink)}
+  .lead .col-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em}
+  .lead .col-meta strong{color:var(--ink);display:block;font-size:30px;font-family:'Fraunces',serif;font-weight:900;font-style:italic;letter-spacing:-.02em;margin-top:4px}
+  .lead .col-meta .delta{color:var(--accent)}
+
+  /* SECTION HEAD */
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:32px 0 14px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+  .section-head h3{font-family:'Fraunces',serif;font-style:italic;font-weight:800;font-size:clamp(26px,4vw,40px);letter-spacing:-.01em;margin:0}
+  .section-head .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}
+
+  /* CITIES */
+  .cities{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--ink)}
+  @media (max-width:880px){.cities{grid-template-columns:1fr}}
+  .city{padding:18px 18px 24px;border-left:1px dashed var(--rule)}
+  .city:first-child{border-left:none;padding-left:0}
+  @media (max-width:880px){.city{border-left:none;border-top:1px dashed var(--rule);padding:18px 0 8px}.city:first-child{border-top:none}}
+  .city .name{font-family:'Fraunces',serif;font-style:italic;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.01em;margin:0 0 2px}
+  .city .coord{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+
+  .item{padding:10px 0;border-top:1px solid rgba(26,22,18,.18);position:relative}
+  .item:first-of-type{border-top:1px solid var(--ink)}
+  .item .row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .item h4{margin:0;font-family:'Fraunces',serif;font-weight:700;font-size:18px;line-height:1.2;letter-spacing:-.005em}
+  .item h4 a{color:var(--ink);text-decoration:none;background-image:linear-gradient(var(--ink),var(--ink));background-size:100% 1px;background-repeat:no-repeat;background-position:0 100%}
+  .item h4 a:hover{color:var(--accent);background-image:linear-gradient(var(--accent),var(--accent))}
+  .when{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink);white-space:nowrap}
+  .where{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:3px 0 6px}
+  .item p{margin:4px 0 0;font-size:15px}
+  .badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--accent);color:var(--accent);margin-left:6px;vertical-align:2px}
+  .badge.now{border-color:var(--live);color:var(--live)}
+  .badge.flag{border-color:var(--ink);color:var(--ink)}
+  .item.is-new::before{content:"NEW";position:absolute;top:8px;right:-2px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.18em;padding:2px 6px;background:var(--accent);color:var(--paper)}
+
+  /* CONFERENCES */
+  .strip{margin-top:28px}
+  .strip-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+  @media (max-width:880px){.strip-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){.strip-grid{grid-template-columns:1fr}}
+  .conf{padding:16px 14px;border-left:1px solid var(--ink);position:relative;background:var(--paper-2)}
+  .conf:first-child{border-left:none}
+  .conf .num{position:absolute;top:8px;right:10px;font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:36px;color:var(--accent);opacity:.18;line-height:1}
+  .conf h4{margin:0;font-family:'Fraunces',serif;font-weight:800;font-size:21px;line-height:1.05;letter-spacing:-.01em;padding-right:30px}
+  .conf h4 a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+  .conf h4 a:hover{border-bottom-color:var(--ink)}
+  .conf .meta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:8px 0 6px}
+  .conf p{margin:0;font-size:14px}
+
+  /* PANEL */
+  .panel{margin-top:36px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);padding:22px 22px 24px;position:relative;overflow:hidden}
+  .panel:before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(244,236,220,.04) 0 2px,transparent 2px 9px);pointer-events:none}
+  .panel h3{font-family:'Fraunces',serif;font-style:italic;font-weight:800;font-size:28px;margin:0 0 4px;letter-spacing:-.01em}
+  .panel .kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-2)}
+  .panel p{font-size:15px;margin:8px 0 12px;color:#e6dcc7}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;position:relative}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:11px 16px;border:none;cursor:pointer;border-radius:0;transition:transform .15s ease}
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--accent-2)}
+  .btn.ghost{background:transparent;color:var(--paper);border:1px solid var(--paper)}
+  .btn.ghost:hover{box-shadow:3px 3px 0 var(--paper)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .status{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-2);margin-top:10px;letter-spacing:.06em;position:relative;min-height:1em}
+  .matrix{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;position:relative}
+  @media (max-width:600px){.matrix{grid-template-columns:1fr}}
+  .matrix .cell{border:1px solid rgba(244,236,220,.25);padding:10px 12px}
+  .matrix .cell h5{margin:0 0 4px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2)}
+  .matrix .cell p{margin:0;font-size:13px;color:#d6c9ad}
+
+  footer{margin-top:30px;padding-top:14px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .drop::first-letter{font-family:'Fraunces',serif;font-weight:900;font-size:3.2em;float:left;line-height:.88;padding:4px 8px 0 0;color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ALERT BANNERS -->
+  <div class="alerts">
+    <div class="banner hidden" id="newBanner">
+      <span><span id="newCount">0</span> new since your last visit</span>
+      <button id="dismissNew" class="x" aria-label="dismiss">×</button>
+    </div>
+    <div class="banner hidden" id="installBanner">
+      <span>Install for daily push</span>
+      <span style="display:flex;gap:6px">
+        <button id="installBtn">Install</button>
+        <button id="dismissInstall" class="x" aria-label="dismiss">×</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="top">
+      <span id="vol">Vol. I · No. —</span>
+      <span id="dateline">—</span>
+      <span>Curated · Data Eng</span>
+    </div>
+    <h1>The Data <span class="amp">&amp;</span> AI Dispatch</h1>
+    <div class="sub">
+      <span>Ottawa · Toronto · Montréal · USA &amp; Canada</span>
+      <span><span class="live-dot"></span> &nbsp;Live</span>
+    </div>
+  </header>
+
+  <!-- LEAD -->
+  <section class="lead">
+    <div>
+      <div class="deck">Today's Lead</div>
+      <h2 id="leadTitle">Loading briefing…</h2>
+    </div>
+    <div>
+      <p class="drop" id="leadBody">A clustering of events makes this week the densest on the 2026 calendar so far.</p>
+    </div>
+    <div class="col-meta">
+      Events tracked
+      <strong id="totalEvents">—</strong>
+      Net-new since last visit
+      <strong class="delta" id="deltaEvents">—</strong>
+    </div>
+  </section>
+
+  <!-- CITIES -->
+  <div class="section-head">
+    <h3>The Cities</h3>
+    <span class="tag" id="citiesTag">—</span>
+  </div>
+  <section class="cities" id="cities"></section>
+
+  <!-- CONFERENCES -->
+  <div class="strip">
+    <div class="section-head">
+      <h3>The Conferences <span style="font-style:normal;font-weight:400;color:var(--muted);font-size:.55em">— USA + Canada, 2026</span></h3>
+      <span class="tag">Tier-1 only</span>
+    </div>
+    <div class="strip-grid" id="conferences"></div>
+  </div>
+
+  <!-- CONTROL PANEL -->
+  <section class="panel">
+    <div class="kicker">Settings · push · install</div>
+    <h3>Daily push, no server required.</h3>
+    <p>This briefing is a Progressive Web App. Installed to your Home Screen, it runs a daily background check (Android/Chromium) and fires a local notification when new events appear. On iOS, the check runs every time you open it.</p>
+
+    <div class="controls">
+      <button class="btn" id="installBtn2">Install to Home Screen</button>
+      <button class="btn ghost" id="enablePush">Enable notifications</button>
+      <button class="btn ghost" id="checkNow">Check for new now</button>
+    </div>
+    <div class="status" id="status">—</div>
+
+    <div class="matrix">
+      <div class="cell">
+        <h5>① Install</h5>
+        <p>iOS Safari: Share → Add to Home Screen. Android Chrome: prompt or menu → Install app.</p>
+      </div>
+      <div class="cell">
+        <h5>② Allow notifications</h5>
+        <p>Tap "Enable notifications" — required for the daily ping. Stored on this device only.</p>
+      </div>
+      <div class="cell">
+        <h5>③ Done</h5>
+        <p>Daily background sync polls <span class="mono">events.json</span>. New events trigger a local notification.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>End of briefing</span>
+    <span id="footTime">—</span>
+    <span>v1 · PWA · no backend</span>
+  </footer>
+
+</div>
+
+<script>
+// ---------- helpers ----------
+const $ = (id) => document.getElementById(id);
+const setStatus = (m, color) => {
+  const el = $('status');
+  el.style.color = color || 'var(--accent-2)';
+  el.textContent = m;
+};
+const fmtDate = (d) => d.toLocaleDateString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// ---------- dateline ----------
+const now = new Date();
+$('dateline').textContent = fmtDate(now);
+$('footTime').textContent = now.toLocaleString('en-CA',{timeZone:'America/Toronto'}) + ' ET';
+
+// ---------- load events.json + render ----------
+async function loadEvents() {
+  const res = await fetch('./events.json', { cache: 'no-store' }).catch(() => null);
+  if (!res || !res.ok) return null;
+  return res.json();
+}
+
+function renderBriefing(data) {
+  const events = data.events || [];
+
+  // Volume from version
+  $('vol').textContent = `Vol. I · No. ${data.version || '—'}`;
+
+  // Totals + delta vs last seen (two methods, combined)
+  const seen = JSON.parse(localStorage.getItem('seenIds') || '[]');
+  const seenSet = new Set(seen);
+  const lastVisitISO = localStorage.getItem('lastVisit');
+  const lastVisitMs = lastVisitISO ? Date.parse(lastVisitISO) : 0;
+
+  // "New" = either never seen OR added to the feed after last visit
+  const isNewEvent = (e) => {
+    if (!seenSet.has(e.id)) return true;
+    if (lastVisitMs && e.discovered_at && Date.parse(e.discovered_at) > lastVisitMs) return true;
+    return false;
+  };
+
+  const newOnes = events.filter(isNewEvent);
+  $('totalEvents').textContent = events.length;
+  $('deltaEvents').textContent = newOnes.length ? `+${newOnes.length}` : '0';
+
+  // Lead headline picks the most timely flagged event
+  const nowEvent = events.find((e) => (e.flags || []).includes('happening-now')) ||
+                   events.find((e) => (e.flags || []).includes('this-week')) ||
+                   events.find((e) => (e.flags || []).includes('next-week'));
+  if (nowEvent) {
+    $('leadTitle').textContent = `${nowEvent.name} — ${nowEvent.when}.`;
+    $('leadBody').textContent = nowEvent.blurb;
+  } else {
+    $('leadTitle').textContent = 'Today\'s curated brief, ready.';
+    $('leadBody').textContent = `${events.length} events across Ottawa, Toronto, Montréal and the major US + Canada conferences.`;
+  }
+
+  // Cities
+  const cities = ['Ottawa', 'Toronto', 'Montréal'];
+  const coords = {
+    'Ottawa':    '45.4215°N · 75.6972°W',
+    'Toronto':   '43.6532°N · 79.3832°W',
+    'Montréal':  '45.5019°N · 73.5674°W'
+  };
+  const citiesEl = $('cities');
+  citiesEl.innerHTML = '';
+  cities.forEach((city) => {
+    const col = document.createElement('div');
+    col.className = 'city';
+    const items = events.filter((e) => e.city === city);
+    col.innerHTML = `
+      <div class="name">${city}</div>
+      <div class="coord">${coords[city]}</div>
+      ${items.map((e) => itemHTML(e, isNewEvent(e))).join('')}
+    `;
+    citiesEl.appendChild(col);
+  });
+
+  // Conferences
+  const confs = events.filter((e) => e.category === 'conference');
+  const confEl = $('conferences');
+  confEl.innerHTML = confs.map((e, i) => `
+    <article class="conf">
+      <div class="num">${String(i + 1).padStart(2, '0')}</div>
+      <h4><a href="${e.url}" target="_blank" rel="noopener">${e.name}</a></h4>
+      <div class="meta">${e.when}${e.where ? ' · ' + e.where : ''}</div>
+      <p>${e.blurb}</p>
+    </article>
+  `).join('');
+
+  $('citiesTag').textContent = `${events.filter(e => e.category === 'city').length} events · curated`;
+
+  // Show "new" banner if there's a delta and the user has visited before
+  if (seen.length > 0 && newOnes.length > 0) {
+    $('newCount').textContent = newOnes.length;
+    $('newBanner').classList.remove('hidden');
+  }
+
+  // Persist seen-ids
+  localStorage.setItem('seenIds', JSON.stringify(events.map(e => e.id)));
+  localStorage.setItem('lastVisit', new Date().toISOString());
+}
+
+function itemHTML(e, isNew) {
+  const badges = (e.flags || []).map(f => {
+    if (f === 'happening-now') return '<span class="badge now">happening now</span>';
+    if (f === 'tomorrow')      return '<span class="badge now">tomorrow</span>';
+    if (f === 'this-week')     return '<span class="badge now">this week</span>';
+    if (f === 'next-week')     return '<span class="badge now">next week</span>';
+    if (f === 'next-month')    return '<span class="badge now">next month</span>';
+    if (f === 'flagship')      return '<span class="badge flag">flagship</span>';
+    if (f === 'watchlist')     return '<span class="badge">watchlist</span>';
+    return '';
+  }).join('');
+  return `
+    <div class="item ${isNew ? 'is-new' : ''}">
+      <div class="row">
+        <h4><a href="${e.url}" target="_blank" rel="noopener">${e.name}${badges}</a></h4>
+        <span class="when">${e.when}</span>
+      </div>
+      <div class="where">${e.where || ''}</div>
+      <p>${e.blurb}</p>
+    </div>`;
+}
+
+// ---------- service worker registration ----------
+let swReg = null;
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      swReg = await navigator.serviceWorker.register('./sw.js');
+      // Try to register periodic background sync (Chromium / Android Chrome)
+      if ('periodicSync' in swReg) {
+        try {
+          const status = await navigator.permissions.query({ name: 'periodic-background-sync' });
+          if (status.state === 'granted') {
+            await swReg.periodicSync.register('daily-briefing-check', { minInterval: 24 * 60 * 60 * 1000 });
+          }
+        } catch (_) { /* not supported */ }
+      }
+    } catch (e) { console.warn('SW register failed', e); }
+  });
+}
+
+// ---------- install prompt ----------
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem('installDismissed')) {
+    $('installBanner').classList.remove('hidden');
+  }
+});
+
+async function doInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice;
+    setStatus(choice.outcome === 'accepted' ? 'installed' : 'install dismissed');
+    deferredPrompt = null;
+    $('installBanner').classList.add('hidden');
+  } else {
+    // iOS / unsupported
+    setStatus('iOS Safari: tap Share → Add to Home Screen. Other browsers: use the browser menu → Install.');
+  }
+}
+$('installBtn').addEventListener('click', doInstall);
+$('installBtn2').addEventListener('click', doInstall);
+$('dismissInstall').addEventListener('click', () => {
+  $('installBanner').classList.add('hidden');
+  localStorage.setItem('installDismissed', '1');
+});
+$('dismissNew').addEventListener('click', () => $('newBanner').classList.add('hidden'));
+
+// ---------- notifications opt-in ----------
+$('enablePush').addEventListener('click', async () => {
+  if (!('Notification' in window)) { setStatus('this browser does not support notifications', '#ff6b5a'); return; }
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    setStatus('notifications enabled');
+    // Fire a confirmation via the SW so it works on installed PWAs / iOS
+    if (swReg) {
+      swReg.showNotification('The Data Dispatch', {
+        body: 'You\'re subscribed. The daily briefing will arrive here.',
+        icon: './icon-192.png', badge: './icon-192.png', tag: 'welcome'
+      });
+    } else {
+      new Notification('The Data Dispatch', { body: 'Notifications enabled.', icon: './icon-192.png' });
+    }
+  } else {
+    setStatus('permission ' + perm, '#ff6b5a');
+  }
+});
+
+// ---------- manual check ----------
+$('checkNow').addEventListener('click', async () => {
+  setStatus('checking…');
+  // Tell the service worker to run a fresh check (will fire notification if delta)
+  if (navigator.serviceWorker?.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'CHECK_NOW' });
+  }
+  // Also reload the briefing in-page
+  const data = await loadEvents();
+  if (data) {
+    renderBriefing(data);
+    setStatus('refreshed at ' + new Date().toLocaleTimeString());
+  } else {
+    setStatus('offline — using cached version');
+  }
+});
+
+// ---------- on-open check (key for iOS) ----------
+(async () => {
+  const data = await loadEvents();
+  if (data) {
+    renderBriefing(data);
+    // Ask the SW to also run a check + fire notification if new (works on iOS PWA too)
+    if (navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CHECK_NOW' });
+    }
+  } else {
+    $('leadTitle').textContent = 'Offline — showing cached briefing';
+  }
+})();
+</script>
+</body>
+</html>

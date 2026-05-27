@@ -1,0 +1,32 @@
+{
+  "name": "The Data & AI Dispatch",
+  "short_name": "Data Dispatch",
+  "description": "Daily briefing of top Data & AI events in Ottawa, Toronto, Montréal — plus Tier-1 USA + Canada conferences.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4ecdc",
+  "theme_color": "#1a1612",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["news", "productivity"]
+}
