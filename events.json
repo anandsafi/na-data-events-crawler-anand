@@ -1,7 +1,4 @@
 {
-  "version": "2026-05-27-v2",
-  "generated_at": "2026-05-27T22:50:00-04:00",
-  "previous_version": "2026-05-27",
   "events": [
     {
       "id": "tto-tech-week-2026",
@@ -14,7 +11,9 @@
       "where": "City-wide · hundreds of events",
       "url": "https://www.createwith.com/cities/toronto",
       "blurb": "Largest annual celebration of Canadian tech. Includes ALL IN Talks Toronto and dozens of AI-adjacent founder sessions.",
-      "flags": ["happening-now"],
+      "flags": [
+        "happening-now"
+      ],
       "discovered_at": "2026-05-27T00:00:00-04:00"
     },
     {
@@ -27,7 +26,10 @@
       "where": "Toronto Tech Week · Vector Institute + Scale AI",
       "url": "https://allinevent.ai/talks/toronto/",
       "blurb": "One-day flagship during Toronto Tech Week. Presented by Vector Institute, supported by Scale AI — positions Ontario as AI leader. Audience: researchers, engineering leaders, founders, policy.",
-      "flags": ["tomorrow", "flagship"],
+      "flags": [
+        "tomorrow",
+        "flagship"
+      ],
       "discovered_at": "2026-05-27T22:50:00-04:00"
     },
     {
@@ -41,7 +43,9 @@
       "where": "CIBC SQUARE, 81 Bay Street",
       "url": "https://www.torontomachinelearning.com/",
       "blurb": "10th annual. 15,000+ practitioner community. Three tracks: Research, Business Strategy, Technical Applications. Focused on production ML, RAG, agentic systems, GenAI ops — not slideware. Highest-signal Toronto event for your team.",
-      "flags": ["flagship"],
+      "flags": [
+        "flagship"
+      ],
       "discovered_at": "2026-05-27T22:50:00-04:00"
     },
     {
@@ -55,7 +59,10 @@
       "where": "Sheraton Toronto Airport Hotel & CC",
       "url": "https://bigdatasummitcanada.com/",
       "blurb": "Canada's market-leading enterprise data event. TD, RBC, BMO, Loblaws, Canadian Tire, Stats Canada on the speaker bench. Ten content tracks, dedicated AI stream. ~500 attendees.",
-      "flags": ["flagship", "next-month"],
+      "flags": [
+        "flagship",
+        "next-month"
+      ],
       "discovered_at": "2026-05-27T00:00:00-04:00"
     },
     {
@@ -89,7 +96,9 @@
       "where": "MaRS · Toronto",
       "url": "https://vectorinstitute.ai/",
       "blurb": "Vector's annual flagship showcasing AI research and industry innovation. 2026 edition was Feb 19–20; next edition expected Feb 2027. Add to watchlist.",
-      "flags": ["watchlist"],
+      "flags": [
+        "watchlist"
+      ],
       "discovered_at": "2026-05-27T22:50:00-04:00"
     },
     {
@@ -135,7 +144,9 @@
       "where": "Mila · one-day research conference",
       "url": "https://mila.quebec/en/event/mila-techaide-2026",
       "blurb": "Hugo Larochelle, Oana Balmau, Natasha Jaques, Ivana Kajic keynote. Proceeds to Centraide.",
-      "flags": ["this-week"],
+      "flags": [
+        "this-week"
+      ],
       "discovered_at": "2026-05-27T00:00:00-04:00"
     },
     {
@@ -187,7 +198,9 @@
       "where": "Palais des congrès, Montréal",
       "url": "https://allinevent.ai/",
       "blurb": "6,500+ attendees, 40 countries. Bengio, Aidan Gomez (Cohere), Kari Briski (NVIDIA). Canadian flagship.",
-      "flags": ["flagship"],
+      "flags": [
+        "flagship"
+      ],
       "discovered_at": "2026-05-27T00:00:00-04:00"
     },
     {
@@ -211,7 +224,9 @@
       "where": "Moscone Center, San Francisco",
       "url": "https://www.snowflake.com/en/summit/save-the-date/",
       "blurb": "20,000+ attendees. 500+ sessions. Openflow, Adaptive Compute, Cortex AISQL. Directly relevant to your BQ→Snowflake migration.",
-      "flags": ["next-week"],
+      "flags": [
+        "next-week"
+      ],
       "discovered_at": "2026-05-27T00:00:00-04:00"
     },
     {
@@ -234,7 +249,9 @@
       "where": "Las Vegas",
       "url": "https://www.getdbt.com/dbt-summit",
       "blurb": "Largest gathering of dbt users. Fusion engine, AI features, analytics-engineering playbooks. Most relevant to your stack.",
-      "flags": ["flagship"],
+      "flags": [
+        "flagship"
+      ],
       "discovered_at": "2026-05-27T00:00:00-04:00"
     },
     {
@@ -257,7 +274,9 @@
       "where": "Las Vegas · multi-venue (Caesars, Venetian, Wynn)",
       "url": "https://reinvent.awsevents.com/",
       "blurb": "Largest cloud + AI conference. 2,200+ sessions. Heavy 2026 themes: agentic AI, Bedrock, AI Factories. Registration opens Jun 16; early-bird saves $1,200 until Aug 25.",
-      "flags": ["flagship"],
+      "flags": [
+        "flagship"
+      ],
       "discovered_at": "2026-05-27T22:50:00-04:00"
     },
     {
