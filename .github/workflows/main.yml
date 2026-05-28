@@ -2,7 +2,7 @@ name: Refresh Events JSON
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */8 * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
           node-version: "20"
 
       - name: Refresh events.json
-        run: node scripts/refresh-events.js
+        run: node scripts/refresh_events.js
 
       - name: Commit updated events.json
         run: |
