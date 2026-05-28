@@ -1,0 +1,41 @@
+name: Refresh Events JSON
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run service worker event check
+        run: |
+          node -e "
+          const fs = require('fs');
+          const code = fs.readFileSync('sw.js', 'utf8');
+          global.self = global;
+          global.addEventListener = () => {};
+          eval(code);
+          checkForNewEvents();
+          "
+
+      - name: Commit updated events.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add events.json
+
+          if git diff --cached --quiet; then
+            echo "No changes detected"
+          else
+            git commit -m "Auto refresh events.json"
+            git push
+          fi
