@@ -2,7 +2,7 @@ name: Refresh Events JSON
 
 on:
   schedule:
-    - cron: "0 */6 * * *" # every 6 hours
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -13,19 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run crawler
-        run: node index.js
+      - name: Run checkForNewEvents from sw.js
+        run: |
+          node -e "
+          const fs = require('fs');
+          const code = fs.readFileSync('sw.js', 'utf8');
+          eval(code);
+          checkForNewEvents();
+          "
 
       - name: Commit updated events.json
         run: |
