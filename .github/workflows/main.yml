@@ -15,16 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run service worker event check
-        run: |
-          node -e "
-          const fs = require('fs');
-          const code = fs.readFileSync('sw.js', 'utf8');
-          global.self = global;
-          global.addEventListener = () => {};
-          eval(code);
-          checkForNewEvents();
-          "
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Refresh events.json
+        run: node scripts/refresh-events.js
 
       - name: Commit updated events.json
         run: |
